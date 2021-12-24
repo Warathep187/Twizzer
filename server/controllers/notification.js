@@ -40,6 +40,3 @@ exports.getRequests = (req, res) => {
             res.json(data);
         });
 };
-// exports.getLikes = (req, res) => {}
-// exports.getRetweets = (req, res) => {}
-// exports.getComments = (req, res) => {}

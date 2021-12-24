@@ -48,30 +48,20 @@ exports.getInitialProfile = (req, res) => {
 };
 
 exports.getPopularUser = (req, res) => {
-    User.find({ role: "admin" })
-        .select("_id")
-        .exec((err, admins) => {
+    const { _id } = req.user;
+    UserData.find({ $and: [{ role: { $ne: "admin" } }, { _id: { $ne: _id } }] })
+        .populate("user", "username name")
+        .sort({ follower: -1 })
+        .limit(5)
+        .exec((err, popularUser) => {
             if (err) {
                 return res.status(400).json({
                     error: "Something went wrong.",
                 });
             }
-            const adminArray = admins.map((admin) => admin._id);
-            console.log(adminArray);
-            UserData.find({ user: { $nin: adminArray } })
-                .populate("user", "username name")
-                .sort({ follower: -1 })
-                .limit(5)
-                .exec((err, popularUser) => {
-                    if (err) {
-                        return res.status(400).json({
-                            error: "Something went wrong.",
-                        });
-                    }
-                    res.json({
-                        popular: popularUser,
-                    });
-                });
+            res.json({
+                popular: popularUser,
+            });
         });
 };
 
@@ -709,8 +699,20 @@ exports.acceptRequest = (req, res) => {
                                             error: "Something went wrong.",
                                         });
                                     }
-                                    res.json({
-                                        message: "Accepted.",
+                                    const alertForAccepter = new Notification({
+                                        to_user: _id,
+                                        from_user: requestFrom,
+                                        type: "follow",
+                                    });
+                                    alertForAccepter.save((err, result) => {
+                                        if (err) {
+                                            return res.status(400).json({
+                                                error: "Something went wrong.",
+                                            });
+                                        }
+                                        res.json({
+                                            message: "Accepted.",
+                                        });
                                     });
                                 });
                             });

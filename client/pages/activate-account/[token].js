@@ -3,9 +3,9 @@ import jwt from "jsonwebtoken";
 import { AlertSuccess, AlertError } from "../../components/Alert/Alert";
 import axios from "axios";
 import Head from "next/head";
+import Router from "next/router";
 
-const ActivatePage = (props) => {
-    const [userName, setUserName] = useState("");
+const ActivatePage = ({ name, token, invalidToken }) => {
     const [status, setStatus] = useState({
         success: "",
         error: "",
@@ -13,7 +13,10 @@ const ActivatePage = (props) => {
     const [buttonText, setButtonText] = useState("Activate");
 
     const { success, error } = status;
-    const { name, token, invalidToken } = props;
+
+    if (invalidToken) {
+        Router.push("/");
+    }
 
     const activateHandler = async () => {
         try {
@@ -85,6 +88,7 @@ export const getServerSideProps = (ctx) => {
         props: {
             token,
             name,
+            invalidToken: false,
         },
     };
 };

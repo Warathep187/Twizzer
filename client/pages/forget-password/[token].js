@@ -1,5 +1,5 @@
 import NewPassword from "../../components/ForgetPassword/NewPassword";
-import Head from "next/Head";
+import Head from "next/head";
 import jwt from "jsonwebtoken";
 import { Fragment } from "react";
 

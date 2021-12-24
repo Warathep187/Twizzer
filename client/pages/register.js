@@ -27,13 +27,9 @@ export const getServerSideProps = (ctx) => {
                 destination: "/",
             },
         };
-    } else {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/login",
-            },
-        };
+    }
+    return {
+        props: {}
     }
 };
 

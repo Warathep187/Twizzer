@@ -397,7 +397,7 @@ exports.checkAdmin = (req, res) => {
         .select("user")
         .populate("user", "role")
         .exec((err, data) => {
-            if (err || !data) {
+            if (err) {
                 return res.status(401).json({
                     error: "Something went wrong.",
                 });

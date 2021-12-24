@@ -235,7 +235,7 @@ const HomePage = ({ token }) => {
             </Head>
             <div className="row p-4">
                 <div className="col-md-9 text-break">{allPosts}</div>
-                <div className="col-md-3 pt-3">
+                <div className="col-md-3">
                     <PopularUser token={token} />
                     <PopularTag token={token} />
                 </div>
